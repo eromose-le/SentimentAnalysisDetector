@@ -27,7 +27,10 @@ export default class App extends Component {
         'x-rapidapi-key': '4309bc4b1fmshc562790b301c9f7p142dbcjsn8a362c578cff',
         'x-rapidapi-host': 'sentiment-analysis4.p.rapidapi.com'
       },
-      data: { text: 'this is a not so cool product' }
+      // Pass data from input keyboard
+      data: {
+        text: input
+      },
     }).then((response) => {
       console.log(response.data);
 
@@ -43,6 +46,9 @@ export default class App extends Component {
   };
 
   render() {
+    // Bring in State Variables
+    const { loading, probability, output } = this.state;
+
     return (
       <SafeAreaProvider>
         <View style={styles.container}>
@@ -54,8 +60,11 @@ export default class App extends Component {
             <Input placeholder="Enter text to perform Sentiment Analysis" onChangeText={(value) => this.setState({ input: value })}></Input>
           </View>
           <View style={styles.buttonContainer}>
-            <Button title="Find Sentiment" buttonStyle={styles.button} titleStyle={{ fontSize: 20 }}></Button>
+            <Button title="Find Sentiment" buttonStyle={styles.button} titleStyle={{ fontSize: 20 }} onPress={this.goForAxios}></Button>
           </View>
+          {
+            loading ? <Text></Text> : <View style={styles.output}><Text style={{ fontSize: 18 }}>{output + '-' + probability}</Text></View>
+          }
           <View style={styles.imageContainer}>
             <Image source={require('./assets/drama.png')} style={styles.dramaImage}></Image>
           </View>
@@ -99,5 +108,9 @@ const styles = StyleSheet.create({
   dramaImage: {
     width: 170,
     height: 170
+  },
+  output: {
+    // fontSize: 29,
+    alignItems: 'center'
   }
 })
